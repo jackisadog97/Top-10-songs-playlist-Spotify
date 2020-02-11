@@ -29,13 +29,14 @@ print("Welcome to Playlist Generator, " + displayName)
 print("You have " + str(followers) + " followers!")
 print()
 
+
 #Using the Spotify API rather than spotipy, just for testing
+'''
 artist_info = requests.get(
     'https://api.spotify.com/v1/search',
     headers={'authorization':"Bearer " + token},
     params ={'q':'Nine+inch+nails','type':"artist"} 
-)
-print(artist_info.status_code)
+)'''
 
 while True:
 
@@ -53,9 +54,9 @@ while True:
             artist_uri = search_results["artists"]["items"][0]["uri"]
             artist_top10 = spotifyObject.artist_top_tracks(artist_uri)
             playlist_name = search_term.lower()
-            playlist_name = playlist_name.capitalize() + " Top 10"
-            now = datetime.now()
-            description = "A top ten playlist for " + search_term + "\n" + str(now.strftime("%H:%M:%S"))
+            playlist_name = playlist_name.upper() + " \nTop 10"
+            now = datetime.today()
+            description = "A top ten playlist for " + search_term.upper() + ". Created on the " + str(now.strftime('%d-%-m-%Y'))
             top10_tracks_uris = []
             top10_tracks_names = []
             for i in range(10):
