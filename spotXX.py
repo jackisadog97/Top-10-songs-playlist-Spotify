@@ -3,6 +3,7 @@ import sys
 import json
 import spotipy
 #import webbrowser
+import requests
 import spotipy.util as util
 from json.decoder import JSONDecodeError
 
@@ -23,6 +24,21 @@ displayName = current_user["display_name"]
 followers = current_user["followers"]["total"]
 #print(json.dumps(current_user,sort_keys=True,indent=5 ))
 
+PARAMS = {'Authorization': "Bearer" + str(token)}
+r = requests.get(url = "https://api.spotify.com/v1/search?q=roadhouse&type=artist")
+print(r.status_code)
+
+
+
+
+
+
+
+
+
+
+
+
 
 while True:
     print("Welcome to Playlist Generator, " + displayName)
@@ -42,8 +58,11 @@ while True:
             artist_uri = search_results["artists"]["items"][0]["uri"]
             artist_top10 = spotifyObject.artist_top_tracks(artist_uri)
             top10_tracks_uris = []
+            top10_tracks_names = []
             for i in range(10):
                 top10_tracks_uris.append(artist_top10["tracks"][i]["uri"])
+                top10_tracks_names.append(artist_top10["tracks"][i]["name"])
+            print(top10_tracks_names)
             print(top10_tracks_uris)
 
             #print(json.dumps(artist_top10["tracks"][0]["uri"],sort_keys=True,indent=6))
