@@ -55,13 +55,17 @@ while True:
             playlist_name = search_term.lower()
             playlist_name = playlist_name.capitalize() + " Top 10"
             now = datetime.now()
-            description = "A top ten playlist for " + search_term + str(now.strftime("%H:%M:%S"))
+            description = "A top ten playlist for " + search_term + "\n" + str(now.strftime("%H:%M:%S"))
             top10_tracks_uris = []
             top10_tracks_names = []
             for i in range(10):
                 top10_tracks_uris.append(artist_top10["tracks"][i]["uri"])
                 top10_tracks_names.append(artist_top10["tracks"][i]["name"])
             response_object = spotifyObject.user_playlist_create(my_username,playlist_name,public=True,description=description)
+            #print(json.dumps(response_object,sort_keys=True,indent=5))
+            playlist_id = response_object["id"]
+            print(playlist_id)
+            spotifyObject.user_playlist_add_tracks(my_username,playlist_id,top10_tracks_uris)
 
             #print(json.dumps(artist_top10["tracks"][0]["uri"],sort_keys=True,indent=6))
         else:
