@@ -24,14 +24,13 @@ displayName = current_user["display_name"]
 followers = current_user["followers"]["total"]
 #print(json.dumps(current_user,sort_keys=True,indent=5 ))
 
-PARAMS = {'Authorization': "Bearer" + str(token)}
-r = requests.get(url = "https://api.spotify.com/v1/search?q=roadhouse&type=artist")
-print(r.status_code)
-
-
-
-
-
+#Using the Spotify API rather than spotipy, just for testing
+artist_info = requests.get(
+    'https://api.spotify.com/v1/search',
+    headers={'authorization':"Bearer " + token},
+    params ={'q':'Nine+inch+nails','type':"artist"} 
+)
+print(artist_info)
 
 
 
