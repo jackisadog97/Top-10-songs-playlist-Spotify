@@ -11,10 +11,10 @@ my_username = "hj5uimud6gdownctltjhzcvk3"
 
 #Erase cache and ask for user permission
 try:
-    token = util.prompt_for_user_token(my_username)
+    token = util.prompt_for_user_token(my_username,scope="playlist-modify-private playlist-modify-public")
 except:
     os.remove(f".cache-{my_username}")
-    token = util.prompt_for_user_token(my_username)
+    token = util.prompt_for_user_token(my_username,scope="playlist-modify-private playlist-modify-public")
 
 #create spotify Object
 spotifyObject = spotipy.Spotify(auth=token)
@@ -24,25 +24,20 @@ displayName = current_user["display_name"]
 followers = current_user["followers"]["total"]
 #print(json.dumps(current_user,sort_keys=True,indent=5 ))
 
+print("Welcome to Playlist Generator, " + displayName)
+print("You have " + str(followers) + " followers!")
+print()
+
 #Using the Spotify API rather than spotipy, just for testing
 artist_info = requests.get(
     'https://api.spotify.com/v1/search',
     headers={'authorization':"Bearer " + token},
     params ={'q':'Nine+inch+nails','type':"artist"} 
 )
-print(artist_info)
-
-
-
-
-
-
-
+print(artist_info.status_code)
 
 while True:
-    print("Welcome to Playlist Generator, " + displayName)
-    print("You have " + str(followers) + " followers!")
-    print()
+
     print("0 - Search for an artist")
     print("1 - exit")
     choice = input("Your choice: ")
@@ -63,6 +58,8 @@ while True:
                 top10_tracks_names.append(artist_top10["tracks"][i]["name"])
             print(top10_tracks_names)
             print(top10_tracks_uris)
+            response_object = spotifyObject.user_playlist_create(my_username,"NINTop10",public=True,description="test")
+            print(response_object)
 
             #print(json.dumps(artist_top10["tracks"][0]["uri"],sort_keys=True,indent=6))
         else:
