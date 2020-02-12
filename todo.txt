@@ -1,0 +1,11 @@
+--Change introduction phase, perhaps skip the enter 1 or 0 stage
+--Include the Cleint and secret keys in variables, stops the exporting every reset(see spotipy docs)
+--Make the name of playlist equal to the artist name, not what was entered (in case of typos)
+--Clean up code, get rid of not needed requests
+--Add custom image to playlist
+--Get better definition of "top songs"
+--add custom paramter to limit size of playlist
+
+
+--Add multiiple artists to single playlist
+--eventually maybe add a GUI

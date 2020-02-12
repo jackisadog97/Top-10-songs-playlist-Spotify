@@ -56,7 +56,7 @@ while True:
             playlist_name = search_term.lower()
             playlist_name = playlist_name.upper() + " \nTop 10"
             now = datetime.today()
-            description = "A top ten playlist for " + search_term.upper() + ". Created on the " + now.strftime('%d/%m/%Y')
+            description = "A top ten playlist for " + search_term.upper() + ". Created on the " + now.strftime('%d-%m-%Y')
             top10_tracks_uris = []
             top10_tracks_names = []
             for i in range(10):
