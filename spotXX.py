@@ -7,15 +7,20 @@ import requests
 import spotipy.util as util
 from json.decoder import JSONDecodeError
 from datetime import datetime
+import urllib.request
+import base64
 
 my_username = "hj5uimud6gdownctltjhzcvk3"
+client_id = ''
+client_s = ''
+client_r = ''
 
 #Erase cache and ask for user permission
 try:
-    token = util.prompt_for_user_token(my_username,scope="playlist-modify-private playlist-modify-public")
+    token = util.prompt_for_user_token(my_username,scope="playlist-modify-private playlist-modify-public ugc-image-upload")
 except:
     os.remove(f".cache-{my_username}")
-    token = util.prompt_for_user_token(my_username,scope="playlist-modify-private playlist-modify-public")
+    token = util.prompt_for_user_token(my_username,scope="playlist-modify-private playlist-modify-public ugc-image-upload")
 
 #create spotify Object
 spotifyObject = spotipy.Spotify(auth=token)
@@ -55,6 +60,13 @@ while True:
             artist_top10 = spotifyObject.artist_top_tracks(artist_uri)
             playlist_name = search_term.lower()
             playlist_name = playlist_name.upper() + " \nTop 10"
+        #get artist image for playlist
+            image_url = search_results["artists"]["items"][0]["images"][0]["url"]
+            urllib.request.urlretrieve(image_url,"artist_image.jpeg")
+            with open("artist_image.jpeg","rb") as f:
+                encoded_string = base64.b64encode(f.read())
+
+
             now = datetime.today()
             description = "A top ten playlist for " + search_term.upper() + ". Created on the " + now.strftime('%d-%m-%Y')
             top10_tracks_uris = []
@@ -67,6 +79,19 @@ while True:
             playlist_id = response_object["id"]
             print(playlist_id)
             spotifyObject.user_playlist_add_tracks(my_username,playlist_id,top10_tracks_uris)
+            spotifyObject.playlist_upload_cover_image(playlist_id,encoded_string)
+            
+            if os.path.isfile("artist_image.jpeg"):
+                os.remove('artist_image.jpeg')
+            
+            '''
+artist_info = requests.get(
+    'https://api.spotify.com/v1/search',
+    headers={'authorization':"Bearer " + token},
+    params ={'q':'Nine+inch+nails','type':"artist"} 
+)'''
+
+
 
             #print(json.dumps(artist_top10["tracks"][0]["uri"],sort_keys=True,indent=6))
         else:
