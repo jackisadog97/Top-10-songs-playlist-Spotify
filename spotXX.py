@@ -10,14 +10,14 @@ from datetime import datetime
 import urllib.request
 import base64
 
-my_username = "hj5uimud6gdownctltjhzcvk3"
-client_id = ''
-client_s = ''
-client_r = ''
+my_username = 
+client_id = 
+client_s = 
+client_r = 
 
 #Erase cache and ask for user permission
 try:
-    token = util.prompt_for_user_token(my_username,scope="playlist-modify-private playlist-modify-public ugc-image-upload")
+    token = util.prompt_for_user_token(my_username,scope="playlist-modify-private playlist-modify-public ugc-image-upload",client_id=client_id,client_secret=client_s,redirect_uri=client_r)
 except:
     os.remove(f".cache-{my_username}")
     token = util.prompt_for_user_token(my_username,scope="playlist-modify-private playlist-modify-public ugc-image-upload")
@@ -58,10 +58,10 @@ while True:
         if len(search_results["artists"]["items"]) > 0:
             artist_uri = search_results["artists"]["items"][0]["uri"]
             artist_top10 = spotifyObject.artist_top_tracks(artist_uri)
-            playlist_name = search_term.lower()
+            playlist_name = search_results["artists"]["items"][0]["name"]
             playlist_name = playlist_name.upper() + " \nTop 10"
         #get artist image for playlist
-            image_url = search_results["artists"]["items"][0]["images"][0]["url"]
+            image_url = search_results["artists"]["items"][0]["images"][1]["url"]
             urllib.request.urlretrieve(image_url,"artist_image.jpeg")
             with open("artist_image.jpeg","rb") as f:
                 encoded_string = base64.b64encode(f.read())
